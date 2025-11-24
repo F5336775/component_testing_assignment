@@ -1,5 +1,19 @@
 package dev.ntziks.login
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import main.java.dev.ntziks.login.NetworkMonitor
+import main.java.dev.ntziks.login.repository.AuthRepository
+import main.java.dev.ntziks.login.viewmodel.LoginViewModel
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
+
 @OptIn(ExperimentalCoroutinesApi::class)
 class LoginViewModelTest {
 
@@ -39,6 +53,7 @@ class LoginViewModelTest {
         onPasswordChanged("pass")
     }
 
+    //1. Validation enables/disables button.
     @Test
     fun `1 validation enables and disables button`() = runTest {
         assertThat(vm.state.value.isLoginEnabled).isFalse()
@@ -60,6 +75,7 @@ class LoginViewModelTest {
         assertThat(vm.state.value.isLoginEnabled).isFalse()
     }
 
+    //2. Success → navigation event.
     @Test
     fun `2 success triggers navigation event`() = runTest {
         vm.updateCredentials()
@@ -73,6 +89,7 @@ class LoginViewModelTest {
         assertThat(state.failureCount).isZero()
     }
 
+    //3. Error increments failure count.
     @Test
     fun `3 error increments failure count`() = runTest {
         repo.result = Result.failure(Exception("bad"))
@@ -87,6 +104,7 @@ class LoginViewModelTest {
         assertThat(vm.state.value.failureCount).isEqualTo(2)
     }
 
+    //4. Lockout after 3 failures.
     @Test
     fun `4 lockout after 3 failures`() = runTest {
         repo.result = Result.failure(Exception("bad"))
@@ -103,6 +121,7 @@ class LoginViewModelTest {
         assertThat(state.errorMessage).isEqualTo("Too many attempts")
     }
 
+    //5. Offline → show message, no service call.
     @Test
     fun `5 offline shows message and does not call service`() = runTest {
         network.online = false
@@ -117,6 +136,7 @@ class LoginViewModelTest {
         assertThat(repo.callCount).isEqualTo(0)
     }
 
+    //6. Remember me persists token.
     @Test
     fun `6 remember me persists token`() = runTest {
         vm.onRememberMeChanged(true)
