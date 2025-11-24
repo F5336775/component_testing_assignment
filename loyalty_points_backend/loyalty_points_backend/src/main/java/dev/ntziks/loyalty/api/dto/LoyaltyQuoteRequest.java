@@ -15,6 +15,9 @@ public class LoyaltyQuoteRequest {
         this.promoCode = promoCode;
     }
 
+    public LoyaltyQuoteRequest() {
+    }
+
     public double getFareAmount() {
         return fareAmount;
     }

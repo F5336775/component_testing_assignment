@@ -11,6 +11,7 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.handler.BodyHandler;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class PointsQuoteVerticle extends AbstractVerticle {
     @Override
     public void start(Promise<Void> startPromise) {
         Router router = Router.router(vertx);
+        router.route().handler(BodyHandler.create());
         router.post("/v1/points/quote")
                 .consumes("application/json")
                 .produces("application/json")
@@ -40,7 +42,7 @@ public class PointsQuoteVerticle extends AbstractVerticle {
 
         vertx.createHttpServer()
                 .requestHandler(router)
-                .listen(0, http -> {
+                .listen(8080, http -> {
                     if (http.succeeded()) {
                         startPromise.complete();
                     } else {
@@ -49,7 +51,7 @@ public class PointsQuoteVerticle extends AbstractVerticle {
                 });
     }
 
-    private void handleQuote(RoutingContext ctx) {
+    public void handleQuote(RoutingContext ctx) {
         JsonObject json = ctx.body().asJsonObject();
         LoyaltyQuoteRequest req;
         try {
