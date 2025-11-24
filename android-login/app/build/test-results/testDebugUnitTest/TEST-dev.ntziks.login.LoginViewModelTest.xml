@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.ntziks.login.LoginViewModelTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2025-11-24T15:20:50.807Z" hostname="FNBU1G19X84" time="0.264">
+  <properties/>
+  <testcase name="5 offline shows message and does not call service" classname="dev.ntziks.login.LoginViewModelTest" time="0.244"/>
+  <testcase name="1 validation enables and disables button" classname="dev.ntziks.login.LoginViewModelTest" time="0.01"/>
+  <testcase name="6 remember me persists token" classname="dev.ntziks.login.LoginViewModelTest" time="0.002"/>
+  <testcase name="3 error increments failure count" classname="dev.ntziks.login.LoginViewModelTest" time="0.002"/>
+  <testcase name="2 success triggers navigation event" classname="dev.ntziks.login.LoginViewModelTest" time="0.003"/>
+  <testcase name="4 lockout after 3 failures" classname="dev.ntziks.login.LoginViewModelTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

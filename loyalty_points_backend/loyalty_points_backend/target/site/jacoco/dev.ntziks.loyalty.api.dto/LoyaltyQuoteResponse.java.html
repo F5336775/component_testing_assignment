@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoyaltyQuoteResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend-vertx</a> &gt; <a href="index.source.html" class="el_package">dev.ntziks.loyalty.api.dto</a> &gt; <span class="el_source">LoyaltyQuoteResponse.java</span></div><h1>LoyaltyQuoteResponse.java</h1><pre class="source lang-java linenums">package dev.ntziks.loyalty.api.dto;
+
+import java.util.List;
+
+public class LoyaltyQuoteResponse {
+    private final int basePoints;
+    private final int tierBonus;
+    private final int promoBonus;
+    private final int totalPoints;
+    private final double effectiveFxRate;
+    private final List&lt;String&gt; warnings;
+
+<span class="fc" id="L13">    public LoyaltyQuoteResponse(int basePoints, int tierBonus, int promoBonus, int totalPoints, double effectiveFxRate, List&lt;String&gt; warnings) {</span>
+<span class="fc" id="L14">        this.basePoints = basePoints;</span>
+<span class="fc" id="L15">        this.tierBonus = tierBonus;</span>
+<span class="fc" id="L16">        this.promoBonus = promoBonus;</span>
+<span class="fc" id="L17">        this.totalPoints = totalPoints;</span>
+<span class="fc" id="L18">        this.effectiveFxRate = effectiveFxRate;</span>
+<span class="fc" id="L19">        this.warnings = warnings;</span>
+<span class="fc" id="L20">    }</span>
+
+    public int getBasePoints() {
+<span class="fc" id="L23">        return basePoints;</span>
+    }
+
+    public int getTierBonus() {
+<span class="fc" id="L27">        return tierBonus;</span>
+    }
+
+    public int getPromoBonus() {
+<span class="fc" id="L31">        return promoBonus;</span>
+    }
+
+    public int getTotalPoints() {
+<span class="fc" id="L35">        return totalPoints;</span>
+    }
+
+    public double getEffectiveFxRate() {
+<span class="fc" id="L39">        return effectiveFxRate;</span>
+    }
+
+    public List&lt;String&gt; getWarnings() {
+<span class="fc" id="L43">        return warnings;</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

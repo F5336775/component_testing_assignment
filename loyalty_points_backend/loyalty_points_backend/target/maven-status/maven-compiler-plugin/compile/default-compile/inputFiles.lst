@@ -1,0 +1,10 @@
+C:\Users\F5336775\FunSpace\component_testing\loyalty_points_backend\loyalty_points_backend\src\main\java\dev\ntziks\loyalty\api\dto\LoyaltyQuoteRequest.java
+C:\Users\F5336775\FunSpace\component_testing\loyalty_points_backend\loyalty_points_backend\src\main\java\dev\ntziks\loyalty\domain\LoyaltyPointsCalculator.java
+C:\Users\F5336775\FunSpace\component_testing\loyalty_points_backend\loyalty_points_backend\src\main\java\dev\ntziks\loyalty\adapters\VertxFxClient.java
+C:\Users\F5336775\FunSpace\component_testing\loyalty_points_backend\loyalty_points_backend\src\main\java\dev\ntziks\loyalty\api\dto\LoyaltyQuoteResponse.java
+C:\Users\F5336775\FunSpace\component_testing\loyalty_points_backend\loyalty_points_backend\src\main\java\dev\ntziks\loyalty\adapters\PointsQuoteVerticle.java
+C:\Users\F5336775\FunSpace\component_testing\loyalty_points_backend\loyalty_points_backend\src\main\java\dev\ntziks\loyalty\clients\FxClient.java
+C:\Users\F5336775\FunSpace\component_testing\loyalty_points_backend\loyalty_points_backend\src\main\java\dev\ntziks\loyalty\adapters\VertxPromoClient.java
+C:\Users\F5336775\FunSpace\component_testing\loyalty_points_backend\loyalty_points_backend\src\main\java\dev\ntziks\loyalty\clients\PromoClient.java
+C:\Users\F5336775\FunSpace\component_testing\loyalty_points_backend\loyalty_points_backend\src\main\java\dev\ntziks\loyalty\domain\Tier.java
+C:\Users\F5336775\FunSpace\component_testing\loyalty_points_backend\loyalty_points_backend\src\main\java\dev\ntziks\Main.java

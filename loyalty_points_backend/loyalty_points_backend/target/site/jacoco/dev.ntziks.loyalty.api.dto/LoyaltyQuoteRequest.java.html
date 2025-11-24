@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoyaltyQuoteRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend-vertx</a> &gt; <a href="index.source.html" class="el_package">dev.ntziks.loyalty.api.dto</a> &gt; <span class="el_source">LoyaltyQuoteRequest.java</span></div><h1>LoyaltyQuoteRequest.java</h1><pre class="source lang-java linenums">package dev.ntziks.loyalty.api.dto;
+
+public class LoyaltyQuoteRequest {
+    private double fareAmount;
+    private String currency;
+    private String cabinClass;
+    private String customerTier;
+    private String promoCode;
+
+<span class="nc" id="L10">    public LoyaltyQuoteRequest(double fareAmount, String currency, String cabinClass, String customerTier, String promoCode) {</span>
+<span class="nc" id="L11">        this.fareAmount = fareAmount;</span>
+<span class="nc" id="L12">        this.currency = currency;</span>
+<span class="nc" id="L13">        this.cabinClass = cabinClass;</span>
+<span class="nc" id="L14">        this.customerTier = customerTier;</span>
+<span class="nc" id="L15">        this.promoCode = promoCode;</span>
+<span class="nc" id="L16">    }</span>
+
+<span class="fc" id="L18">    public LoyaltyQuoteRequest() {</span>
+<span class="fc" id="L19">    }</span>
+
+    public double getFareAmount() {
+<span class="fc" id="L22">        return fareAmount;</span>
+    }
+
+    public void setFareAmount(double fareAmount) {
+<span class="fc" id="L26">        this.fareAmount = fareAmount;</span>
+<span class="fc" id="L27">    }</span>
+
+    public String getCurrency() {
+<span class="fc" id="L30">        return currency;</span>
+    }
+
+    public void setCurrency(String currency) {
+<span class="fc" id="L34">        this.currency = currency;</span>
+<span class="fc" id="L35">    }</span>
+
+    public String getCabinClass() {
+<span class="fc" id="L38">        return cabinClass;</span>
+    }
+
+    public void setCabinClass(String cabinClass) {
+<span class="fc" id="L42">        this.cabinClass = cabinClass;</span>
+<span class="fc" id="L43">    }</span>
+
+    public String getCustomerTier() {
+<span class="fc" id="L46">        return customerTier;</span>
+    }
+
+    public void setCustomerTier(String customerTier) {
+<span class="fc" id="L50">        this.customerTier = customerTier;</span>
+<span class="fc" id="L51">    }</span>
+
+    public String getPromoCode() {
+<span class="fc" id="L54">        return promoCode;</span>
+    }
+
+    public void setPromoCode(String promoCode) {
+<span class="fc" id="L58">        this.promoCode = promoCode;</span>
+<span class="fc" id="L59">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
