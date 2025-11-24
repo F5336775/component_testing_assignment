@@ -11,9 +11,13 @@ public enum Tier {
 
     private final double multiplier;
 
-    Tier(double multiplier) { this.multiplier = multiplier; }
+    Tier(double multiplier) {
+        this.multiplier = multiplier;
+    }
 
-    public double multiplier() { return multiplier; }
+    public double multiplier() {
+        return multiplier;
+    }
 
     public static Tier from(String s) {
         try {

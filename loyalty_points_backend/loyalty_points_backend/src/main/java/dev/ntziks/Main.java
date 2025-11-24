@@ -7,8 +7,8 @@ import dev.ntziks.loyalty.adapters.VertxPromoClient;
 import dev.ntziks.loyalty.clients.FxClient;
 import dev.ntziks.loyalty.clients.PromoClient;
 import dev.ntziks.loyalty.domain.LoyaltyPointsCalculator;
-import io.vertx.core.Vertx;
 import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Vertx;
 import io.vertx.ext.web.client.WebClient;
 
 public class Main {

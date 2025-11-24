@@ -5,6 +5,7 @@ import io.vertx.core.Future;
 public interface PromoClient {
     Future<PromoResult> fetchPromo(String code);
 
-    record PromoResult(int bonus, boolean expiringSoon) { }
+    record PromoResult(int bonus, boolean expiringSoon) {
+    }
 }
 
