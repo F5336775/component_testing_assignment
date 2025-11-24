@@ -1,0 +1,10 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+backend-vertx,dev.ntziks.loyalty.clients,PromoClient.PromoResult,0,9,0,0,0,1,0,1,0,1
+backend-vertx,dev.ntziks,Main,61,0,2,0,15,0,4,0,3,0
+backend-vertx,dev.ntziks.loyalty.domain,LoyaltyPointsCalculator,0,53,0,4,0,11,0,4,0,2
+backend-vertx,dev.ntziks.loyalty.domain,Tier,3,47,0,0,2,10,0,4,0,4
+backend-vertx,dev.ntziks.loyalty.api.dto,LoyaltyQuoteRequest,18,38,0,0,7,17,1,11,1,11
+backend-vertx,dev.ntziks.loyalty.api.dto,LoyaltyQuoteResponse,0,39,0,0,0,14,0,7,0,7
+backend-vertx,dev.ntziks.loyalty.adapters,VertxFxClient,3,61,2,4,0,15,2,4,0,3
+backend-vertx,dev.ntziks.loyalty.adapters,PointsQuoteVerticle,59,166,4,10,19,41,5,10,2,6
+backend-vertx,dev.ntziks.loyalty.adapters,VertxPromoClient,0,67,1,3,0,18,1,4,0,3

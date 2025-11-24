@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PointsQuoteVerticle.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend-vertx</a> &gt; <a href="index.source.html" class="el_package">dev.ntziks.loyalty.adapters</a> &gt; <span class="el_source">PointsQuoteVerticle.java</span></div><h1>PointsQuoteVerticle.java</h1><pre class="source lang-java linenums">package dev.ntziks.loyalty.adapters;
+
+import dev.ntziks.loyalty.api.dto.LoyaltyQuoteRequest;
+import dev.ntziks.loyalty.api.dto.LoyaltyQuoteResponse;
+import dev.ntziks.loyalty.clients.FxClient;
+import dev.ntziks.loyalty.clients.PromoClient;
+import dev.ntziks.loyalty.domain.LoyaltyPointsCalculator;
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Future;
+import io.vertx.core.Promise;
+import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.Router;
+import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.handler.BodyHandler;
+
+import java.util.List;
+
+public class PointsQuoteVerticle extends AbstractVerticle {
+
+    private final LoyaltyPointsCalculator calculator;
+    private final FxClient fxClient;
+    private final PromoClient promoClient;
+
+    public PointsQuoteVerticle(
+            LoyaltyPointsCalculator calculator,
+            FxClient fxClient,
+            PromoClient promoClient
+<span class="fc" id="L28">    ) {</span>
+<span class="fc" id="L29">        this.calculator = calculator;</span>
+<span class="fc" id="L30">        this.fxClient = fxClient;</span>
+<span class="fc" id="L31">        this.promoClient = promoClient;</span>
+<span class="fc" id="L32">    }</span>
+
+    @Override
+    public void start(Promise&lt;Void&gt; startPromise) {
+<span class="nc" id="L36">        Router router = Router.router(vertx);</span>
+<span class="nc" id="L37">        router.route().handler(BodyHandler.create());</span>
+<span class="nc" id="L38">        router.post(&quot;/v1/points/quote&quot;)</span>
+<span class="nc" id="L39">                .consumes(&quot;application/json&quot;)</span>
+<span class="nc" id="L40">                .produces(&quot;application/json&quot;)</span>
+<span class="nc" id="L41">                .handler(this::handleQuote);</span>
+
+<span class="nc" id="L43">        vertx.createHttpServer()</span>
+<span class="nc" id="L44">                .requestHandler(router)</span>
+<span class="nc" id="L45">                .listen(8080, http -&gt; {</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">                    if (http.succeeded()) {</span>
+<span class="nc" id="L47">                        startPromise.complete();</span>
+                    } else {
+<span class="nc" id="L49">                        startPromise.fail(http.cause());</span>
+                    }
+<span class="nc" id="L51">                });</span>
+<span class="nc" id="L52">    }</span>
+
+    public void handleQuote(RoutingContext ctx) {
+<span class="fc" id="L55">        JsonObject json = ctx.body().asJsonObject();</span>
+        LoyaltyQuoteRequest req;
+        try {
+<span class="fc" id="L58">            req = json.mapTo(LoyaltyQuoteRequest.class);</span>
+<span class="nc" id="L59">        } catch (Exception e) {</span>
+<span class="nc" id="L60">            ctx.response().setStatusCode(400).end(&quot;Invalid JSON&quot;);</span>
+<span class="nc" id="L61">            return;</span>
+<span class="fc" id="L62">        }</span>
+
+        // Validation
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        if (req.getFareAmount() &lt;= 0) {</span>
+<span class="fc" id="L66">            ctx.response().setStatusCode(400).end(&quot;Invalid fareAmount&quot;);</span>
+<span class="fc" id="L67">            return;</span>
+        }
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (!List.of(&quot;USD&quot;, &quot;EUR&quot;, &quot;GBP&quot;).contains(req.getCurrency()) ||</span>
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">                !List.of(&quot;ECONOMY&quot;, &quot;BUSINESS&quot;, &quot;FIRST&quot;).contains(req.getCabinClass())) {</span>
+<span class="nc" id="L71">            ctx.response().setStatusCode(400).end(&quot;Invalid currency or cabinClass&quot;);</span>
+<span class="nc" id="L72">            return;</span>
+        }
+
+<span class="fc" id="L75">        String currency = req.getCurrency();</span>
+<span class="fc" id="L76">        String promoCode = req.getPromoCode();</span>
+
+        // Resilience: retry FX once
+<span class="fc" id="L79">        fetchFxWithRetry(currency, 1).onComplete(fxRes -&gt; {</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">            if (fxRes.failed()) {</span>
+<span class="fc" id="L81">                ctx.response().setStatusCode(502).end(&quot;FX service unavailable&quot;);</span>
+<span class="fc" id="L82">                return;</span>
+            }
+<span class="fc" id="L84">            double fxRate = fxRes.result();</span>
+
+<span class="fc" id="L86">            promoClient.fetchPromo(promoCode).onComplete(promoRes -&gt; {</span>
+<span class="fc" id="L87">                PromoClient.PromoResult promo = promoRes.result();</span>
+<span class="fc" id="L88">                LoyaltyQuoteResponse resp = calculator.calculate(</span>
+                        req,
+                        fxRate,
+<span class="fc" id="L91">                        promo.bonus(),</span>
+<span class="fc" id="L92">                        promo.expiringSoon()</span>
+                );
+<span class="fc" id="L94">                ctx.response()</span>
+<span class="fc" id="L95">                        .setStatusCode(200)</span>
+<span class="fc" id="L96">                        .putHeader(&quot;Content-Type&quot;, &quot;application/json&quot;)</span>
+<span class="fc" id="L97">                        .end(JsonObject.mapFrom(resp).encode());</span>
+<span class="fc" id="L98">            });</span>
+<span class="fc" id="L99">        });</span>
+<span class="fc" id="L100">    }</span>
+
+    private Future&lt;Double&gt; fetchFxWithRetry(String currency, int retries) {
+<span class="fc" id="L103">        Promise&lt;Double&gt; p = Promise.promise();</span>
+<span class="fc" id="L104">        fxClient.fetchRate(currency).onComplete(ar -&gt; {</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">            if (ar.succeeded()) {</span>
+<span class="fc" id="L106">                p.complete(ar.result());</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">            } else if (retries &gt; 0) {</span>
+<span class="fc" id="L108">                fetchFxWithRetry(currency, retries - 1).onComplete(p);</span>
+            } else {
+<span class="fc" id="L110">                p.fail(ar.cause());</span>
+            }
+<span class="fc" id="L112">        });</span>
+<span class="fc" id="L113">        return p.future();</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
