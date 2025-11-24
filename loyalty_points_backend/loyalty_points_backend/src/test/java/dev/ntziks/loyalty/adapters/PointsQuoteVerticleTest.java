@@ -107,67 +107,67 @@ public class PointsQuoteVerticleTest {
                 });
     }
 
-//    @Test
-//    void validation_rejects_invalid_fare(Vertx vertx, VertxTestContext ctx) {
-//        JsonObject req = new JsonObject()
-//                .put("fareAmount", 0.0)
-//                .put("currency", "USD")
-//                .put("cabinClass", "ECONOMY");
-//
-//        webClient(vertx).post(port, "localhost", "/v1/points/quote")
-//                .putHeader("Content-Type", "application/json")
-//                .sendJsonObject(req, ar -> {
-//                    assertThat(ar.succeeded()).isTrue();
-//                    assertThat(ar.result().statusCode()).isEqualTo(400);
-//                    ctx.completeNow();
-//                });
-//    }
-//
-//    @Test
-//    void fx_retry_then_failures_result_in_502(Vertx vertx, VertxTestContext ctx) {
-//        // First both attempts fail
-//        fxServer.stubFor(get(urlPathEqualTo("/fx"))
-//                .willReturn(serverError()));
-//
-//        JsonObject req = new JsonObject()
-//                .put("fareAmount", 100.0)
-//                .put("currency", "USD")
-//                .put("cabinClass", "ECONOMY");
-//
-//        webClient(vertx).post(port, "localhost", "/v1/points/quote")
-//                .putHeader("Content-Type", "application/json")
-//                .sendJsonObject(req, ar -> {
-//                    assertThat(ar.succeeded()).isTrue();
-//                    assertThat(ar.result().statusCode()).isEqualTo(502);
-//                    ctx.completeNow();
-//                });
-//    }
-//
-//    @Test
-//    void promo_timeout_falls_back_to_no_bonus(Vertx vertx, VertxTestContext ctx) {
-//        fxServer.stubFor(get(urlPathEqualTo("/fx"))
-//                .willReturn(okJson("{\"rate\":1.0}")));
-//
-//        // Delay to trigger timeout; VertxPromoClient uses .timeout(300)
-//        promoServer.stubFor(get(urlPathEqualTo("/promo"))
-//                .willReturn(okJson("{\"bonus\":1000,\"expiringSoon\":true}")
-//                        .withFixedDelay(1_000)));
-//
-//        JsonObject req = new JsonObject()
-//                .put("fareAmount", 100.0)
-//                .put("currency", "USD")
-//                .put("cabinClass", "ECONOMY")
-//                .put("customerTier", "SILVER")
-//                .put("promoCode", "TIMEOUT");
-//
-//        webClient(vertx).post(port, "localhost", "/v1/points/quote")
-//                .putHeader("Content-Type", "application/json")
-//                .sendJsonObject(req, ar -> {
-//                    assertThat(ar.succeeded()).isTrue();
-//                    JsonObject body = ar.result().bodyAsJsonObject();
-//                    assertThat(body.getInteger("promoBonus")).isEqualTo(0);
-//                    assertThat(body.getJsonArray("warnings")).isEmpty();
-//                    ctx.completeNow();
-//                });
-//    }
+    @Test
+    void validation_rejects_invalid_fare(Vertx vertx, VertxTestContext ctx) {
+        JsonObject req = new JsonObject()
+                .put("fareAmount", 0.0)
+                .put("currency", "USD")
+                .put("cabinClass", "ECONOMY");
+
+        webClient(vertx).post(port, "localhost", "/v1/points/quote")
+                .putHeader("Content-Type", "application/json")
+                .sendJsonObject(req, ar -> {
+                    assertThat(ar.succeeded()).isTrue();
+                    assertThat(ar.result().statusCode()).isEqualTo(400);
+                    ctx.completeNow();
+                });
+    }
+
+    @Test
+    void fx_retry_then_failures_result_in_502(Vertx vertx, VertxTestContext ctx) {
+        // First both attempts fail
+        fxServer.stubFor(get(urlPathEqualTo("/fx"))
+                .willReturn(serverError()));
+
+        JsonObject req = new JsonObject()
+                .put("fareAmount", 100.0)
+                .put("currency", "USD")
+                .put("cabinClass", "ECONOMY");
+
+        webClient(vertx).post(port, "localhost", "/v1/points/quote")
+                .putHeader("Content-Type", "application/json")
+                .sendJsonObject(req, ar -> {
+                    assertThat(ar.succeeded()).isTrue();
+                    assertThat(ar.result().statusCode()).isEqualTo(502);
+                    ctx.completeNow();
+                });
+    }
+
+    @Test
+    void promo_timeout_falls_back_to_no_bonus(Vertx vertx, VertxTestContext ctx) {
+        fxServer.stubFor(get(urlPathEqualTo("/fx"))
+                .willReturn(okJson("{\"rate\":1.0}")));
+
+        // Delay to trigger timeout; VertxPromoClient uses .timeout(300)
+        promoServer.stubFor(get(urlPathEqualTo("/promo"))
+                .willReturn(okJson("{\"bonus\":1000,\"expiringSoon\":true}")
+                        .withFixedDelay(1_000)));
+
+        JsonObject req = new JsonObject()
+                .put("fareAmount", 100.0)
+                .put("currency", "USD")
+                .put("cabinClass", "ECONOMY")
+                .put("customerTier", "SILVER")
+                .put("promoCode", "TIMEOUT");
+
+        webClient(vertx).post(port, "localhost", "/v1/points/quote")
+                .putHeader("Content-Type", "application/json")
+                .sendJsonObject(req, ar -> {
+                    assertThat(ar.succeeded()).isTrue();
+                    JsonObject body = ar.result().bodyAsJsonObject();
+                    assertThat(body.getInteger("promoBonus")).isEqualTo(0);
+                    assertThat(body.getJsonArray("warnings")).isEmpty();
+                    ctx.completeNow();
+                });
+    }
 }
